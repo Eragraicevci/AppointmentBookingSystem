@@ -12,23 +12,24 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
-
+public class CustomUserDetailsService implements UserDetailsService
+{
     @Autowired
     private IUserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user=userService.findUserByUsername(username)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+    {
+        User user = userService.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-       Set<GrantedAuthority> authorities=Set.of(SecurityUtils.convertToAuthority(user.getRole(). name()));
+        Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(user.getRole().name()));
 
-       return UserPrinciple.builder()
-               .user(user).id(user.getId())
-               .username(username)
-               .password(user.getPassword())
-               .authorities(authorities)
-               .build();
+        return UserPrinciple.builder()
+                .user(user).id(user.getId())
+                .username(username)
+                .password(user.getPassword())
+                .authorities(authorities)
+                .build();
     }
 }

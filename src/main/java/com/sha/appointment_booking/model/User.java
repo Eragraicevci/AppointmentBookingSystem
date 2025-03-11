@@ -32,6 +32,9 @@ public class User {
         @Column(name="role")
         private Role role;
 
+        @Transient //this type of field is not stored in DB
+        private String token;
+
 
 
 

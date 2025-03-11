@@ -17,8 +17,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class JwtProvider implements IJwtProvider{
-
+public class JwtProvider implements IJwtProvider
+{
     @Value("${app.jwt.secret}")
     private String JWT_SECRET;
 
@@ -71,7 +71,6 @@ public class JwtProvider implements IJwtProvider{
         return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
     }
 
-
     @Override
     public boolean validateToken(HttpServletRequest request)
     {
@@ -103,5 +102,4 @@ public class JwtProvider implements IJwtProvider{
                 .parseClaimsJws(token)
                 .getBody();
     }
-
 }
