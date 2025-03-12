@@ -24,6 +24,16 @@ public class UserPrinciple implements UserDetails {
         transient private User user;
         private Set<GrantedAuthority> authorities;
 
+        public static UserPrinciple createSuperUser()
+        {
+                Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(Role.SYSTEM_MANAGER.name()));
+
+                return UserPrinciple.builder()
+                        .id(-1L)
+                        .username("system-administrator")
+                        .authorities(authorities)
+                        .build();
+        }
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities()
         {

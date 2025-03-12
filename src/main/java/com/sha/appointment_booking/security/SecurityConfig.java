@@ -1,7 +1,9 @@
 package com.sha.appointment_booking.security;
 
+import com.sha.appointment_booking.security.jwt.InternalApiAuthenticationFilter;
 import com.sha.appointment_booking.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +24,9 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${authentication.internal-api-key}")
+    private String internalApiKey;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -44,6 +49,13 @@ public class SecurityConfig {
         .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+    @Bean
+    public InternalApiAuthenticationFilter internalApiAuthenticationFilter()
+    {
+        return new InternalApiAuthenticationFilter(internalApiKey);
+    }
+
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter()
